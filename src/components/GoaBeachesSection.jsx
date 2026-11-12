@@ -47,7 +47,7 @@ export default function GoaBeachesSection() {
                 transition={{ duration: 0.8, ease: 'easeOut' }}
             >
                 <h2>Our Dream Destination 🏖️</h2>
-                <p>These beaches are waiting for us, Ishika...</p>
+                <p>These beaches are waiting for us, Aditi...</p>
 
                 <motion.div
                     className="video-grid"

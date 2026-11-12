@@ -67,7 +67,7 @@ const verses = [
     },
 ];
 
-export default function SongLyricsSection() {
+export default function SongLyricsSection({ musicPlaying, onToggleMusic }) {
     const [activeVerse, setActiveVerse] = useState(0);
     const [autoPlay, setAutoPlay] = useState(true);
 
@@ -90,6 +90,15 @@ export default function SongLyricsSection() {
             >
                 <h2>Her Favourite Song 🎵</h2>
                 <p className="song-title">Darkhaast — Arijit Singh</p>
+                {onToggleMusic && (
+                    <button
+                        type="button"
+                        className="song-play-btn"
+                        onClick={onToggleMusic}
+                    >
+                        {musicPlaying ? '⏸ Pause Track' : '▶ Play Darkhaast'}
+                    </button>
+                )}
 
                 {/* Animated verse display */}
                 <div className="lyrics-display">

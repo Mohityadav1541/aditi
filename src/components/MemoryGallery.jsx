@@ -1,76 +1,102 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const memories = [
-    { src: '/ishika1.jpg', alt: 'Our Memory 1', caption: 'Every moment with you ✨' },
-    { src: '/ishika2.jpg', alt: 'Our Memory 2', caption: 'Is pure magic 💫' },
-    { src: '/ishika1.jpg', alt: 'Our Memory 3', caption: 'And I want more 💖' },
+    { src: '/aditi1.jpg', alt: 'Aditi in Emerald', caption: 'Effortless charm in every glance ✨' },
+    { src: '/aditi2.jpg', alt: 'Aditi in Ivory Saree', caption: 'Pure grace & timeless poise 🤍' },
+    { src: '/aditi3.jpg', alt: 'Aditi in Crimson', caption: 'Warmth, elegance & a little fire ❤️' },
+    { src: '/aditi4.jpg', alt: 'Aditi in Sunshine Yellow', caption: 'My favorite kind of sunshine 💛' },
 ];
 
 const containerVariants = {
     hidden: {},
     visible: {
         transition: {
-            staggerChildren: 0.2,
+            staggerChildren: 0.14,
         },
     },
 };
 
 const itemVariants = {
-    hidden: { opacity: 0, y: 60, scale: 0.9 },
+    hidden: { opacity: 0, y: 40, scale: 0.94 },
     visible: {
         opacity: 1,
         y: 0,
         scale: 1,
-        transition: { duration: 0.6, ease: 'easeOut' },
+        transition: { duration: 0.55, ease: 'easeOut' },
     },
 };
 
 export default function MemoryGallery() {
+    const [selectedPhoto, setSelectedPhoto] = useState(null);
+
     return (
-        <section>
+        <section id="gallery">
             <motion.div
                 className="glass-card"
-                initial={{ opacity: 0, y: 80 }}
+                initial={{ opacity: 0, y: 60 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.8, ease: 'easeOut' }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.75, ease: 'easeOut' }}
             >
-                <h2>Our Memories 💌</h2>
-                <p>Every picture tells our story...</p>
+                <span className="section-kicker">FRAMES I ADORE</span>
+                <h2>Four Shades of Aditi 💌</h2>
+                <p>Tap any photo to open it full screen</p>
 
                 <motion.div
                     className="gallery"
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="visible"
-                    viewport={{ once: true, margin: '-30px' }}
+                    viewport={{ once: true, margin: '-20px' }}
                 >
                     {memories.map((memory, index) => (
                         <motion.div
                             key={index}
                             className="gallery-item"
                             variants={itemVariants}
-                            whileHover={{
-                                y: -8,
-                                scale: 1.03,
-                                transition: { duration: 0.3 },
-                            }}
+                            whileTap={{ scale: 0.97 }}
+                            onClick={() => setSelectedPhoto(memory)}
                         >
                             <img src={memory.src} alt={memory.alt} loading="lazy" />
-                            <p
-                                style={{
-                                    marginTop: '10px',
-                                    fontFamily: 'var(--font-cursive)',
-                                    fontSize: 'clamp(0.9rem, 2vw, 1.1rem)',
-                                    opacity: 0.8,
-                                }}
-                            >
-                                {memory.caption}
-                            </p>
+                            <p className="gallery-caption">{memory.caption}</p>
                         </motion.div>
                     ))}
                 </motion.div>
             </motion.div>
+
+            {/* Mobile-friendly Lightbox */}
+            <AnimatePresence>
+                {selectedPhoto && (
+                    <motion.div
+                        className="lightbox-backdrop"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setSelectedPhoto(null)}
+                    >
+                        <motion.div
+                            className="lightbox-content"
+                            initial={{ scale: 0.88, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            transition={{ type: 'spring', bounce: 0.25 }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <button
+                                type="button"
+                                className="lightbox-close"
+                                onClick={() => setSelectedPhoto(null)}
+                                aria-label="Close photo"
+                            >
+                                ✕
+                            </button>
+                            <img src={selectedPhoto.src} alt={selectedPhoto.alt} />
+                            <p>{selectedPhoto.caption}</p>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </section>
     );
 }

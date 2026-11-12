@@ -1,6 +1,8 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import HeroSection from './components/HeroSection';
+import StyleMuseSection from './components/StyleMuseSection';
+import FlirtDeckSection from './components/FlirtDeckSection';
 import CountdownSection from './components/CountdownSection';
 import MemoryGallery from './components/MemoryGallery';
 import LoveLetterSection from './components/LoveLetterSection';
@@ -13,7 +15,7 @@ import CursorTrail from './components/CursorTrail';
 import Confetti from 'react-confetti';
 import { useWindowSize } from 'react-use';
 
-function App() {
+export default function App() {
     const { width, height } = useWindowSize();
     const [proposalApproved, setProposalApproved] = useState(false);
     const [musicPlaying, setMusicPlaying] = useState(false);
@@ -27,7 +29,7 @@ function App() {
         } else {
             musicRef.current.play().catch(() => { });
         }
-        setMusicPlaying(!musicPlaying);
+        setMusicPlaying((prev) => !prev);
     }, [musicPlaying]);
 
     const handleApprove = useCallback(() => {
@@ -52,9 +54,9 @@ function App() {
                         width={width}
                         height={height}
                         recycle={false}
-                        numberOfPieces={800}
-                        gravity={0.15}
-                        colors={['#ff6ec4', '#7873f5', '#ffd700', '#ff9a9e', '#fecfef']}
+                        numberOfPieces={650}
+                        gravity={0.16}
+                        colors={['#e85d9e', '#f4c977', '#7873f5', '#ff9a9e', '#fecfef']}
                     />
                 </div>
             )}
@@ -76,9 +78,10 @@ function App() {
             </video>
 
             <div className="slideshow">
-                <img src="/ishika1.jpg" alt="Memory 1" />
-                <img src="/ishika2.jpg" alt="Memory 2" />
-                <img src="/ishika1.jpg" alt="Memory 3" />
+                <img src="/aditi1.jpg" alt="Aditi Look 1" />
+                <img src="/aditi2.jpg" alt="Aditi Look 2" />
+                <img src="/aditi3.jpg" alt="Aditi Look 3" />
+                <img src="/aditi4.jpg" alt="Aditi Look 4" />
             </div>
 
             {/* Overlay */}
@@ -90,17 +93,17 @@ function App() {
             {/* Floating Hearts */}
             <FloatingHearts />
 
-            {/* Moon Memory Photo */}
+            {/* Moon Memory Photo (Desktop/Tablet) */}
             <AnimatePresence>
                 {showMoonPhoto && (
                     <motion.img
-                        src="/ishika2.jpg"
-                        alt="Moon Memory"
+                        src="/aditi2.jpg"
+                        alt="Aditi Moon Memory"
                         className="moon-memory"
-                        initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
+                        initial={{ opacity: 0, scale: 0.5, rotate: -8 }}
                         animate={{ opacity: 1, scale: 1, rotate: 2 }}
                         exit={{ opacity: 0, scale: 0 }}
-                        transition={{ duration: 1, type: 'spring', bounce: 0.4 }}
+                        transition={{ duration: 0.9, type: 'spring', bounce: 0.35 }}
                     />
                 )}
             </AnimatePresence>
@@ -112,14 +115,20 @@ function App() {
                 onTypingComplete={handleTypingComplete}
             />
 
-            {/* Ishika Photo Showcase */}
+            {/* Editorial Fashion & Muse Lookbook */}
+            <StyleMuseSection />
+
+            {/* Interactive Flirting & Goa Vibe Deck */}
+            <FlirtDeckSection />
+
+            {/* Aditi Photo Showcase */}
             <PhotoShowcase />
 
             {/* Love Letter */}
             <LoveLetterSection />
 
             {/* Her Favourite Song */}
-            <SongLyricsSection />
+            <SongLyricsSection musicPlaying={musicPlaying} onToggleMusic={toggleMusic} />
 
             {/* Goa Beaches Videos */}
             <GoaBeachesSection />
@@ -132,8 +141,17 @@ function App() {
 
             {/* Footer */}
             <footer className="footer">
-                Made with ❤️ only for Ishika
+                Crafted with ❤️ exclusively for Aditi
             </footer>
+
+            {/* Mobile Quick Navigation Pill */}
+            <nav className="mobile-dock" aria-label="Quick sections">
+                <a href="#hero">Top</a>
+                <a href="#style-muse">Looks</a>
+                <a href="#flirt-deck">Whispers</a>
+                <a href="#letter">Letter</a>
+                <a href="#gallery">Photos</a>
+            </nav>
 
             {/* Music Toggle */}
             <button
@@ -146,5 +164,3 @@ function App() {
         </div>
     );
 }
-
-export default App;
